@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    /* accordion formatting */
+    .accordion {
+        background-color: #eee;
+        color: #444;
+        cursor: pointer;
+        padding: 20px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 20px;
+        transition: 0.4s;
+    }
+
+    .active, .accordion:hover {
+        background-color: #ccc;
+    }
+
+    .panel {
+        padding: 0 18px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+    }
+
+
+
+    .accordion:after {
+        content: &plus;
+        font-size: 13px;
+        color: #777;
+        float: right;
+        margin-left: 5px;
+    }
+
+    .active:visited {
+        content: &minus; /* Unicode character for "minus" sign (-) */
+    }
+
+
+
+    /* table formatting */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+    /* Tab formatting */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+
+
+    }
+
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 18px 26px;
+        transition: 0.3s;
+        font-size: 30px;
+
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+        animation: fadeEffect 1s; /* Fading effect takes 1 second */
+    }
+
+    /* Go from zero to full tab opacity */
+    @keyframes fadeEffect {
+        from {opacity: 0;}
+        to {opacity: 1;}
+
+    </style>
+</head>
+
+
+<body>
+    <div class="tab">
+      <button class="tabimage" onclick="parent.location='https://digital.nhs.uk/'">
+        <img src="https://digital.nhs.uk/media/89/NHSDigital/variant1/NHS-Digital-logo_WEB_LEFT-33x285"
+            alt="NHS Digital Corporate Logo">
+      </button>
+      <button class="tablinks" id="defaultOpen" onclick="openCity(event, 'Home')">Home</button>
+      <button class="tablinks" onclick="openCity(event, 'ORD')">ORD API </button>
+      <button class="tablinks" onclick="openCity(event, 'FHIR')">FHIR API </button>
+    </div>
+
+
+    <div id="Home" class="tabcontent">
+        <h2>Welcome to the ODS API Suite ***Alpha***</h2>
+
+        <p>The ODS API Suite provides a searchable national repository of NHS Organisation Reference Data.  The data returned by the interfaces is managed and published by ODS (Organisation Data Service) within NHS Digital.</p>
+        <p>The ODS API Suite is replacing the POC API “An Open API to Health and Social Care Organisation Reference Data” described on this page on the Developer Network Site.</p>
+        <p>Note: Between 5pm to 7pm, the service may be taken down for maintenance and would be unavailable during this time.</p>
+        <p>The development is currently in <b>Alpha</b> stage and is hosted on a test platform. The service has <b>not yet been authorised for live usage</b> therefore must not be used or connected to any live system or service. The data within the service is <b>test data</b> so again must not be considered or used for live use.</p>
+        <p>Once the service transitions to Live use the ODS API Suite will become the official method for receiving updates to Organisation Reference Data and service is available free at the point of use to all consumers.</p>
+
+        <h3>Background Information</h3>
+        <p>ODS API Suite – ORD and FHIR interfaces.</p>
+        <p>At the present time the data is available via two <a href="https://en.wikipedia.org/wiki/Representational_state_transfer"> RESTful</a> APIs hosted within this service.  The data returned by the service is transformed to meet requirements of two customer groups as follows:</p>
+
+        <h3>ORD Consumers</h3>
+        <p>A number of ODS consumers have invested in the ODS XML format approved via SCCI ref: SCCI 0090 Organisation Reference Data (ORD) and would like an API that utilises this so as to maximise their investment in using that format (please see <a href="https://digital.nhs.uk/Organisation-data-service/XML-Organisation-Data-Products"> https://digital.nhs.uk/Organisation-data-service/XML-Organisation-Data-Products</a>).</p>
+        <p>An interface aligned to ORD allows consumers to synchronise changes into a local data store “ODS ORD API”.</p>
+        <p>http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations should be used to query full ODS records aligned to ORD. </p>
+        <p>http://stable.ods.cis.spine2.ncrs.nhs.uk/api/sync should be used to synchronise data comprising of the full ODS record as defined in ORD. </p>
+
+        <h3>FHIR Consumers</h3>
+
+        <p>With the increasing number of FHIR based APIs there is also a need to allow ODS data to be used directly by the APIs and leverage the use of the FHIR standard.</p>
+        <p>A transactional interface based on the HL7 FHIR standard provides access via the “ODS Lookup API”.</p>
+        <p>http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization should be used to query HL7 FHIR compliant ODS records.</p>
+        <p>Implementation guidance for the FHIR interface can be found at <a href="https://developer.nhs.uk/apis/ods">https://developer.nhs.uk/apis/ods</a>.</p>
+        <p>Full files containing the underlying reference data is also available as a self-extracting zip file suitable for baselining local data stores prior to batch processing via the APIs. This can be obtained from the <a href="https://isd.digital.nhs.uk/trud3/user/guest/group/0/home">TRUD</a> website.</p>
+
+
+    </div>
+
+    <div id="ORD" class="tabcontent">
+        <p><h3>Three different endpoints are available for the ORD schema:</h3>
+
+
+        <button class="accordion">ODS code lookup</button>
+        <div class="panel">
+            <p><h2>Endpoint</h2>
+            <p> <b> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations/&ltods_code&gt?</b></p>
+            <p><h2> Description</h2>
+            <p> Return the full organisational data of a single organisation via ODS code.
+            <p><h2> Parameters</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>_format</td>
+                    <td><i>string</i> Can take "xml", "json", "text/json", "text/xml", "application/json" and "application/xml" as arguments. If this parameter is not supplied, the format will default to JSON.</td>
+                  </tr>
+
+              </table>
+            <p><h2> Example usage</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Example</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations/RRF"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations/RRF</a></td>
+                    <td>Returns data for an organisation with the ODS code RRF in the format JSON.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations/RRF12?_format=xml"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations/RRF12?_format=xml</a></td>
+                    <td>Returns data for an organisation with the ODS code RRF12 in the format XML.</td>
+                  </tr>
+            </table>
+            <p></p>
+
+        </div>
+
+        <button class="accordion">Organisation search</button>
+        <div class="panel">
+            <p><h2>Endpoint</h2>
+            <p> <b> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations?{search parameters}</b></p>
+            <p><h2> Description</h2>
+            <p> Search the ODS database based on several parameters, and return a summary of multiple organisations.
+            <p><h2> Parameters</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>_format</td>
+                    <td><i>string</i> Can take "xml", "json", "text/json", "text/xml", "application/json" and "application/xml" as arguments. If this parameter is not supplied, the format will default to JSON.</td>
+                 </tr>
+                 <tr>
+                    <td>Name</td>
+                    <td><i>string</i> Search organisations based on name. Organisations that contain the argument string in their name are returned.</td>
+                </tr>
+                <tr>
+                    <td>PostCode</td>
+                    <td><i>string</i> Search organisations based on postcode. Organisations that contain the argument string in their postcode are returned.</td>
+                </tr>
+                <tr>
+                    <td>LastChangeDate</td>
+                    <td><i>date</i> Search for organisations based on their last changed date. Date must be in format "YYYY-MM-DD". The search is greater than or equal to. Dates are restricted to 185 days from present. </td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td><i>string</i> Search for organisations based on their active status. Arguments can be "Active" or "Inactive". </td>
+                </tr>
+                <tr>
+                    <td>PrimaryRoleId</td>
+                    <td><i>string</i> Search for organisations based on their primary role codes. A role code must also be passed through as an argument.</td>
+                <tr>
+                    <td>NonPrimaryRoleId</td>
+                    <td><i>string</i> Search for organisations based on their non primary role codes. A role code must also be passed through as an argument.</td>
+                </tr>
+                <tr>
+                    <td>OrgRecordClass</td>
+                    <td><i>string</i> Search for oganisations based on their record class.</td>
+                </tr>
+                <tr>
+                    <td>Limit</td>
+                    <td><i>integer</i> Used to limit the number of organisations returned per response. The argument can range from 1-1000.</td>
+                </tr>
+                <tr>
+                    <td>Offset</td>
+                    <td><i>integer</i> Used to offset the start point of the result set, by the value specified. The argument can range from 1-****.</td>
+                </tr>
+
+              </table>
+            <p><h2> Example usage</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Example</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations?Name=Leeds&Limit=5"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations?Name=Leeds&Limit=5</a></td>
+                    <td>Returns organisations that contain Leeds in their name and limits the result count to 5, in the format JSON.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations?PostCode=LS28&Status=Active&_format=xml"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/organisations?PostCode=LS28&Status=Active&_format=xml</a></td>
+                    <td>Returns organisations that contain LS28 in their postcode and have a status that is active, in the format XML.</td>
+                  </tr>
+            </table>
+            <p></p>
+
+        </div>
+
+        <button class="accordion">Sync</button>
+        <div class="panel">
+        <p>
+            <p><h2>Endpoint</h2>
+            <p> <b> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/sync?{search parameters}</b></p>
+            <p><h2> Description</h2>
+            <p> Returns a list of organisations that have been modified since a specific date.
+            <p><h2> Parameters</h2>
+            <table style="width:100%">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>LastChangeDate</td>
+                    <td><i>date</i> Date in the format "YYYY-MM-DD". Note that the API will only return records that have been updated in the last 6 months.</td>
+                  </tr>
+                  <tr>
+                    <td>_format</td>
+                    <td><i>string</i> Can take "xml", "json", "text/json", "text/xml", "application/json" and "application/xml" as arguments. If this parameter is not supplied, the format will default to JSON.</td>
+                  </tr>
+
+              </table>
+            <p><h2> Example usage</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Example</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/sync?LastChangeDate=2017-10-25"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/sync?LastChangeDate=2017-10-25</a></td>
+                    <td>Returns a list of organisations that have been modified since 25/10/2017.</td>
+                  </tr>
+            </table>
+            <p></p>
+
+        </div>
+        <p> <b>Content-Type Header</b> </p>
+        <p> The request Content-Type header can be used to set the format of the response. The following MIME types are accepted:</p>
+                <li>application/json</li>
+                <li>application/xml</li>
+                <li>text/json</li>
+                <li>text/xml</li>
+
+
+
+    </div>
+
+      <div id="FHIR" class="tabcontent">
+            <p><h3>Four different endpoints are available for the FHIR schema:</h3>
+
+
+        <button class="accordion">ODS code lookup</button>
+        <div class="panel">
+            <p><h2>Endpoint</h2>
+            <p> <b> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization/&ltods_code&gt?</b></p>
+            <p><h2> Description</h2>
+            <p> Return the full organisational data of a single organisation via ODS code.
+            <p><h2> Parameters</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>_format</td>
+                    <td><i>string</i> Can take "xml", "json", "text/json", "text/xml", "application/fhir+json" and "application/fhir+xml" as arguments. If this parameter is not supplied, the format will default to JSON.</td>
+                  </tr>
+
+              </table>
+            <p><h2> Example usage</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Example</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization/RRF"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization/RRF</a></td>
+                    <td>Returns data for an organisation with the ODS code RRF in the format JSON.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization/RRF12?_format=xml"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization/RRF12?_format=xml</a></td>
+                    <td>Returns data for an organisation with the ODS code RRF12 in the format XML.</td>
+                  </tr>
+            </table>
+            <p></p>
+        </div>
+
+        <button class="accordion">Organisation search</button>
+        <div class="panel">
+            <p><h2>Endpoint</h2>
+            <p> <b> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization?{search parameters}</b></p>
+            <p><h2> Description</h2>
+            <p> Search the ODS database based on several parameters, and return a summary of multiple organisations.
+            <p><h2> Parameters</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>_format</td>
+                    <td><i>string</i> Can take "xml", "json", "text/json", "text/xml", "application/fhir+json" and "application/fhir+xml" as arguments. If this parameter is not supplied, the format will default to JSON.</td>
+                 </tr>
+                 <tr>
+                    <td>name</td>
+                    <td><i>string</i> Search organisations based on their name. Organisations that names start with the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>name:contains</td>
+                    <td><i>string</i> Search organisations based on their name. Organisations that names contain the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>name:exact</td>
+                    <td><i>string</i> Search organisations based on their name. Organisations that names exactly match the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>address-postalcode</td>
+                    <td><i>string</i> Search organisations based on their postal code. Organisations that postalcode start with argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>address-postalcode:contains</td>
+                    <td><i>string</i> Search organisations based on their postal code. Organisations that postalcode contain the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>address-postalcode:exact</td>
+                    <td><i>string</i> Search organisations based on their postal code. Organisations that postalcode exactly match the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>address-city</td>
+                    <td><i>string</i> Search organisations based on their address city. Organisations that city name start with the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>address-city:contains</td>
+                    <td><i>string</i> Search organisations based on their address city. Organisations that city name contain the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>address-city:exact</td>
+                    <td><i>string</i> Search organisations based on their address city. Organisations that city name exactly match the argument string are returned.</td>
+                </tr>
+                <tr>
+                    <td>ods-org-role</td>
+                    <td><i>integer</i> Search organisations based on their role code. Organisations that have role codes that match the argument integer are returned. Supports or searches using "," as a separator. A code system can also be specified using the "|" as a separator (see example).</td>
+                </tr>
+                <tr>
+                    <td>ods-org-primaryRole</td>
+                    <td><i>boolean</i> Search organisations based on their primary role code. This parameter must be used in combination with the ods-org-roles parameter. Can be used to search for organisations based on their primary or non-primary roles. Arguments must be &quottrue&quot or &quotfalse&quot.</td>
+                </tr>
+                <tr>
+                    <td>lastUpdated</td>
+                    <td><i>date</i> Search for organisations based on their last changed date. Date must be in format "gtYYYY-MM-DD". Only the greater than (gt) prefix can be used. </td>
+                </tr>
+                <tr>
+                    <td>active</td>
+                    <td><i>boolean</i> Search for organisations based on their active status. Arguments must be boolean be &quottrue&quot or &quotfalse&quot. </td>
+                </tr>
+                <tr>
+                    <td>identifier</td>
+                    <td><i>string</i> Search for organisations based on their identifier (ods code). A code system can also be specified using the "|" as a separator.</td>
+                </tr>
+                <tr>
+                    <td>_id</td>
+                    <td><i>string</i> Search for organisations based on their unique database key (ods code).</td>
+                </tr>
+                <tr>
+                    <td>_count</td>
+                    <td><i>integer</i> Used to limit the number of organisations returned per response. The argument can range from 0-20. If the argument is 0, a summary bundle is returned.</td>
+                </tr>
+                <tr>
+                    <td>_page</td>
+                    <td><i>integer</i> Used to determine which page of the result set is returned. The argument can range from 1-****.</td>
+                </tr>
+                <tr>
+                    <td>_summary</td>
+                    <td><i>string</i> Used to return a summary bundle of the results. "count" is the only argument that can be used.</td>
+                </tr>
+
+
+              </table>
+            <p><h2> Example usage</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Example</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization?name:contains=leeds&_count=6&_page=2">http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization?name:contains=leeds&_count=6&_page=2</a></td>
+                    <td>Returns the second page of organisations that contain Leeds in their name and limits the result count to 6 per page, in the format JSON.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization?address-postalcode=LS16%209&_format=xml"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization?address-postalcode=LS16%209&_format=xml</a></td>
+                    <td>Returns organisations that postcode start with "LS16 9", in the format XML.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization?ods-org-role=https://fhir.nhs.uk/FHIR/STU3/CodeSystem/ODSAPI-OrganizationRole-1|197&ods-org-primaryRole=true&_summary=count"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/Organization?ods-org-role=https://fhir.nhs.uk/FHIR/STU3/CodeSystem/ODSAPI-OrganizationRole-1|197&ods-org-primaryRole=true&_summary=count</a></td>
+                    <td>Returns a summary of organisations that have the primary role code 197 using the code system "https://fhir.nhs.uk/FHIR/STU3/CodeSystem/ODSAPI-OrganizationRole-1", in the format JSON".</td>
+                  </tr>
+            </table>
+            <p>
+
+            </p>
+        </div>
+
+        <button class="accordion">Capability statement</button>
+        <div class="panel">
+            <p><h2>Endpoint</h2>
+            <p> <b> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/metadata?{search parameter}</b></p>
+            <p><h2> Description</h2></p>
+            <p> Returns a capability statement for the FHIR API.
+            <p><h2> Parameters</h2></p>
+            <table style="width:100%">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>_format</td>
+                    <td><i>string</i> Can take "xml", "json", "text/json", "text/xml", "application/fhir+json" and "application/fhir+xml" as arguments. If this parameter is not supplied, the format will default to JSON.</td>
+                 </tr>
+
+              </table>
+            <p><h2> Example usage</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Example</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/metadata?_format=xml"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/metadata?_format=xml</a></td>
+                    <td>Returns the capability statement in XML format.</td>
+                  </tr>
+            </table>
+            <p></p>
+        </div>
+
+        <button class="accordion"> Roles code system</button>
+        <div class="panel">
+        <p>
+            <p><h2>Endpoint</h2>
+            <p> <b> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/STU3/CodeSystem/ODSAPI-OrganizationRole-1?{search parameter}</b></p>
+            <p><h2> Description</h2>
+            <p> Returns a list of the role codes and their description.
+            <p><h2> Parameters</h2>
+            <table style="width:100%">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>_format</td>
+                    <td><i>string</i> Can take "xml", "json", "text/json", "text/xml", "application/fhir+json" and "application/fhir+xml" as arguments. If this parameter is not supplied, the format will default to JSON.</td>
+                 </tr>
+
+              </table>
+            <p><h2> Example usage</h2>
+                    <table style="width:100%">
+                  <tr>
+                    <th>Example</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><a href="http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/STU3/CodeSystem/ODSAPI-OrganizationRole-1"> http://stable.ods.cis.spine2.ncrs.nhs.uk/api/FHIR/STU3/CodeSystem/ODSAPI-OrganizationRole-1</a></td>
+                    <td>Returns a list of role codes in JSON.</td>
+                  </tr>
+            </table>
+        </div>
+        <p><b>Content-Type Header</b></p>
+        <p> The request Content-Type header can be used to set the format of the response. The following MIME types are accepted:</p>
+            <li>application/fhir+json</li>
+            <li>application/json+fhir</li>
+            <li>application/fhir+xml</li>
+            <li>application/xml+fhir</li>
+            <li>text/json</li>
+            <li>text/xml</li>
+    </div>
+
+    <script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight){
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+
+    function openCity(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+    }
+
+    // Specify default tab element to open when page first loads
+    document.getElementById("defaultOpen").click();
+    </script>
+
+</body>
+</html>
